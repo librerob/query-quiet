@@ -1,0 +1,13 @@
+{
+  "name": "query-quiet",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "bench": "node tools/benchmark.mjs",
+    "package": "node tools/package.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

@@ -1,0 +1,25 @@
+:root { color-scheme: light dark; font: 15px/1.55 system-ui, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: Canvas; color: CanvasText; }
+main { max-width: 680px; padding: 52px 24px 32px; margin: auto; }
+header { margin-bottom: 34px; }
+.eyebrow { font-size: .73rem; font-weight: 650; letter-spacing: .16em; }
+h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); line-height: 1.2; letter-spacing: -.035em; font-weight: 600; margin: 12px 0; }
+h2 { font-size: 1rem; font-weight: 650; margin: 0 0 6px; }
+p { margin: 8px 0; }
+header > p:last-child, section > p, footer { color: color-mix(in srgb, CanvasText 70%, Canvas); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+section { border-top: 1px solid color-mix(in srgb, CanvasText 18%, Canvas); margin-top: 26px; padding-top: 24px; }
+.toggle { font-weight: 600; }
+label { display: block; }
+input[type=checkbox] { width: 16px; height: 16px; margin: 0 9px 0 0; vertical-align: -.15em; accent-color: Highlight; }
+.engines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; margin-top: 18px; }
+textarea { display: block; width: 100%; resize: vertical; min-height: 112px; margin-top: 12px; padding: 12px; border: 1px solid GrayText; border-radius: 5px; background: Field; color: FieldText; font: .85rem/1.6 ui-monospace, monospace; }
+.hint, footer { font-size: .82rem; }
+button { font: inherit; font-weight: 600; padding: 9px 16px; margin-top: 18px; border: 1px solid ButtonText; border-radius: 5px; background: ButtonFace; color: ButtonText; cursor: pointer; }
+button:disabled { cursor: default; opacity: .6; }
+:focus-visible { outline: 2px solid Highlight; outline-offset: 4px; }
+#status { min-height: 1.6em; font-size: .86rem; }
+#status[data-error=true] { color: light-dark(#a02020, #ffb4ab); }
+footer { border-top: 1px solid color-mix(in srgb, CanvasText 18%, Canvas); padding-top: 18px; margin-top: 18px; }
+@media (max-width: 420px) { main { padding-top: 30px; } .engines { grid-template-columns: 1fr; } }

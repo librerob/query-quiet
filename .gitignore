@@ -1,0 +1,8 @@
+dist/
+node_modules/
+coverage/
+*.crx
+*.pem
+*.log
+.DS_Store
+Thumbs.db

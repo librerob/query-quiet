@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Query Quiet — Settings</title>
+  <link rel="stylesheet" href="options.css">
+  <script type="module" src="options.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">QUERY QUIET</p>
+      <h1>Keep searches out of history.</h1>
+      <p>Search result URLs are removed as you visit them. Other browsing stays in your history.</p>
+    </header>
+    <form id="settings">
+      <fieldset id="controls" disabled>
+        <label class="toggle"><input id="enabled" type="checkbox"> Automatically remove search URLs</label>
+        <section aria-labelledby="engines-title">
+          <h2 id="engines-title">Search engines</h2>
+          <p>Select the engines to clean. Your choices apply after saving.</p>
+          <div id="engines" class="engines"></div>
+        </section>
+        <section aria-labelledby="custom-title">
+          <h2 id="custom-title">Custom rules</h2>
+          <label for="custom">One exact hostname, path, and query parameter per line.</label>
+          <p id="rule-help" class="hint">Example: <code>searx.example.org /search q</code><br>Hostnames and paths match exactly. Add www or other subdomains separately. No wildcards.</p>
+          <textarea id="custom" rows="5" maxlength="16000" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="rule-help" placeholder="searx.example.org /search q"></textarea>
+          <p class="hint">Up to 100 rules. A custom rule can also match an engine you have unchecked above.</p>
+        </section>
+        <button type="submit" id="save">Save settings</button>
+      </fieldset>
+      <p id="status" role="status" aria-live="polite">Loading settings…</p>
+    </form>
+    <footer>
+      <p>Entirely offline. No analytics. Only settings are stored.</p>
+      <p>Deletion cannot be undone. A matching visit removes all history visits to that exact URL. Bookmarks remain, including bookmarked searches. Existing history is not scanned. Chrome controls Omnibox timing and may sync history deletions if history sync is enabled.</p>
+    </footer>
+  </main>
+</body>
+</html>
