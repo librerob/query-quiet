@@ -40,4 +40,4 @@ One `hostname /path parameter` per line; no wildcards. [Rule format and contribu
 
 Run `node --test` with Node.js 22+. No packages to install.
 
-[Architecture and packaging](docs/DEVELOPMENT.md) · [Testing](TESTING.md) · [Brand assets](assets/README.md) · [MIT license](LICENSE)
+[Architecture and packaging](docs/DEVELOPMENT.md) · [Testing](TESTING.md) · [Brand assets](assets/README.md) · [Privacy](PRIVACY.md) · [MIT license](LICENSE)
