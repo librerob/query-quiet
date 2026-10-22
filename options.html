@@ -27,7 +27,7 @@
         <section aria-labelledby="custom-title">
           <h2 id="custom-title">Custom rules</h2>
           <label for="custom">One exact hostname, path, and query parameter per line.</label>
-          <p id="rule-help" class="hint">Example: <code>searx.example.org /search q</code><br>Hostnames and paths match exactly. Add www or other subdomains separately. No wildcards.</p>
+          <p id="rule-help" class="hint">Example: <code>searx.example.org /search q</code><br>Hostnames and paths match exactly. Add www or other subdomains separately. Lines starting with # are comments. Percent-encode non-ASCII paths. No wildcards.</p>
           <textarea id="custom" rows="5" maxlength="16000" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="rule-help" placeholder="searx.example.org /search q"></textarea>
           <p class="hint">Up to 100 rules. A custom rule can also match an engine you have unchecked above.</p>
         </section>

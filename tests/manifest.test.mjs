@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 test('MV3 uses only history and storage, with no network or injected code surfaces', async () => {
   const manifest = JSON.parse(await readFile(new URL('../manifest.json', import.meta.url), 'utf8'));
   assert.equal(manifest.manifest_version, 3);
+  assert.equal(manifest.minimum_chrome_version, '110');
   assert.deepEqual(manifest.permissions.toSorted(), ['history', 'storage']);
   assert.deepEqual(manifest.background, { service_worker: 'background.js', type: 'module' });
   assert.equal(manifest.host_permissions, undefined);

@@ -57,6 +57,19 @@ test('a persisted pause survives worker restart', async () => {
   } finally { w.close(); }
 });
 
+test('multiple visits delivered during a cold start are all handled', async () => {
+  const w = await worker();
+  try {
+    const urls = [search, 'https://bing.com/images/search?q=cold', 'https://search.yahoo.com/search;_ylt=abc?p=cold'];
+    const pending = urls.map(url => w.visit({ url }));
+    pending.push(w.visit({ url: 'https://example.com/search?q=keep' }));
+    assert.deepEqual(w.deleted, []);
+    w.load();
+    await Promise.all(pending);
+    assert.deepEqual(w.deleted.toSorted(), urls.toSorted());
+  } finally { w.close(); }
+});
+
 test('storage change wins against an older cold-start read', async () => {
   const w = await worker({ settings: { enabled: true } });
   try {
@@ -91,6 +104,7 @@ test('invalid settings pause deletion; removing settings restores defaults', asy
   try {
     w.load(); await w.visit({ url: search });
     assert.deepEqual(w.deleted, []);
+    assert.match(w.warnings[0], /invalid settings/);
     w.change({ settings: { newValue: {} } }, 'local');
     w.change({ settings: { newValue: { enabled: 'false' } } }, 'local');
     await w.visit({ url: search });
@@ -98,6 +112,17 @@ test('invalid settings pause deletion; removing settings restores defaults', asy
     w.change({ settings: {} }, 'local');
     await w.visit({ url: search });
     assert.deepEqual(w.deleted, [search]);
+  } finally { w.close(); }
+});
+
+test('a late failed read does not misreport a newer valid settings event', async () => {
+  const w = await worker({ readError: true });
+  try {
+    const pending = w.visit({ url: search });
+    w.change({ settings: { newValue: {} } }, 'local');
+    w.load(); await pending;
+    assert.deepEqual(w.deleted, [search]);
+    assert.deepEqual(w.warnings, []);
   } finally { w.close(); }
 });
 

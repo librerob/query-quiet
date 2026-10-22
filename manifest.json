@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Query Quiet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Remove search result URLs from browser history as you visit them. Local, offline, and minimal.",
   "minimum_chrome_version": "110",
   "permissions": ["history", "storage"],

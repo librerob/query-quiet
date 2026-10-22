@@ -19,9 +19,10 @@ function crc32(bytes) {
 
 export async function buildPackage() {
   const local = [], central = [];
-  let offset = 0, unpacked = 0;
+  let offset = 0, unpacked = 0, version;
   for (const file of RUNTIME_FILES) {
     const name = Buffer.from(file), data = await readFile(new URL(file, ROOT));
+    if (file === 'manifest.json') version = JSON.parse(data).version;
     const compressed = deflateRawSync(data, { level: 9 });
     const crc = crc32(data);
     const header = Buffer.alloc(30);
@@ -58,7 +59,7 @@ export async function buildPackage() {
   const zip = Buffer.concat([...local, directory, end]);
   if (unpacked >= 100000 || zip.length >= 100000) throw new Error('Package exceeds the 100 KB limit.');
   await mkdir(new URL('dist/', ROOT), { recursive: true });
-  const target = new URL('dist/query-quiet-1.0.0.zip', ROOT);
+  const target = new URL(`dist/query-quiet-${version}.zip`, ROOT);
   await writeFile(target, zip);
   return { file: fileURLToPath(target), files: RUNTIME_FILES.length, unpackedBytes: unpacked, zipBytes: zip.length };
 }

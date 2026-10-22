@@ -7,11 +7,13 @@ const matches = raw => isSearchUrl(raw, defaults);
 
 for (const engine of ENGINES) {
   test(`${engine.name}: every declared host and path`, () => {
-    for (const host of engine.hosts) for (const path of engine.paths) {
-      assert.equal(matches(`https://${host}${path}?${engine.param}=test`), true);
-      assert.equal(matches(`https://${host}${path}?${engine.param}=`), false);
-      assert.equal(matches(`https://${host}${path}?other=test`), false);
-      assert.equal(matches(`https://${host}.example.com${path}?${engine.param}=test`), false);
+    for (const route of [engine, ...(engine.routes ?? [])]) {
+      for (const host of route.hosts) for (const path of route.paths) {
+        assert.equal(matches(`https://${host}${path}?${route.param}=test`), true);
+        assert.equal(matches(`https://${host}${path}?${route.param}=`), false);
+        assert.equal(matches(`https://${host}${path}?other=test`), false);
+        assert.equal(matches(`https://${host}.example.com${path}?${route.param}=test`), false);
+      }
     }
   });
 }
@@ -23,6 +25,84 @@ test('query parsing: encoding, duplicates, nonempty values, and exact keys', () 
   for (const query of ['q', 'q=', 'q=+%20', 'Q=test', 'query=test', 'x=q%3Dtest', 'x=test#q=secret']) {
     assert.equal(matches(`https://www.google.com/search?${query}`), false, query);
   }
+});
+
+test('web, image, video, and news URLs match independent real-world fixtures', () => {
+  for (const raw of [
+    'https://www.google.com/search?q=oak&udm=2',
+    'https://www.google.cz/search?q=oak',
+    'https://google.com.ar/search?q=oak',
+    'https://www.bing.com/images/search?q=oak',
+    'https://bing.com/videos/search?q=oak',
+    'https://www.bing.com/news/search?q=oak',
+    'https://search.brave.com/images?q=oak',
+    'https://search.brave.com/videos?q=oak',
+    'https://search.brave.com/news?q=oak',
+    'https://kagi.com/images?q=oak',
+    'https://kagi.com/videos?q=oak',
+    'https://kagi.com/news?q=oak',
+    'https://www.ecosia.org/images?q=oak',
+    'https://www.ecosia.org/videos?q=oak',
+    'https://www.ecosia.org/news?q=oak',
+    'https://images.search.yahoo.com/search/images?p=oak',
+    'https://video.search.yahoo.com/search/video?p=oak',
+    'https://news.search.yahoo.com/search?p=oak'
+  ]) assert.equal(matches(raw), true, raw);
+});
+
+test('Yahoo tracking suffixes only normalize on enabled built-in search routes', () => {
+  for (const raw of [
+    'https://search.yahoo.com/search;_ylt=A2RS_test.123;_ylu=Y29sbw--?p=oak',
+    'https://uk.search.yahoo.com/search;_ylt=A2RS_test?p=oak',
+    'https://images.search.yahoo.com/search/images;_ylt=A2RS_test;_ylc=abc%2Bdef%3D?p=oak',
+    'https://video.search.yahoo.com/search/video;_ylt=A2RS_test?p=oak',
+    'https://news.search.yahoo.com/search;_ylt=A2RS_test?p=oak'
+  ]) assert.equal(matches(raw), true, raw);
+  for (const raw of [
+    'https://search.yahoo.com/preferences/preferences;_ylt=abc?p=keep',
+    'https://search.yahoo.com/searching;_ylt=abc?p=keep',
+    'https://search.yahoo.com/search;other=abc?p=keep',
+    'https://search.yahoo.com/search;_ylt=abc/other?p=keep',
+    'https://search.yahoo.com/search;_ylt=abc;other=x?p=keep',
+    'https://search.yahoo.com/search;_ylt=?p=keep',
+    'https://search.yahoo.com/search;_ylt=abc?q=keep',
+    'https://images.search.yahoo.com/search?p=keep',
+    'https://search.yahoo.com/search/images?p=keep',
+    'https://www.bing.com/search;_ylt=abc?q=keep',
+    'https://search.yahoo.com.evil.test/search;_ylt=abc?p=keep'
+  ]) assert.equal(matches(raw), false, raw);
+  const custom = compileSettings({ customRules: [{ host: 'search.yahoo.com', path: '/search', param: 'custom' }] });
+  assert.equal(isSearchUrl('https://search.yahoo.com/search?custom=x', custom), true);
+  assert.equal(isSearchUrl('https://search.yahoo.com/search;_ylt=abc?custom=x', custom), false);
+  const disabled = compileSettings({ disabledEngines: ['yahoo'], customRules: [{ host: 'search.yahoo.com', path: '/search', param: 'p' }] });
+  assert.equal(isSearchUrl('https://search.yahoo.com/search;_ylt=abc?p=x', disabled), false);
+});
+
+test('nearby media pages and unlisted Google lookalikes remain untouched', () => {
+  for (const raw of [
+    'https://bing.com/images?q=keep', 'https://bing.com/images/searching?q=keep',
+    'https://search.brave.com/images/about?q=keep', 'https://search.brave.com/maps/search?q=keep',
+    'https://kagi.com/settings?q=keep', 'https://ecosia.org/images/help?q=keep',
+    'https://google.example/search?q=keep', 'https://google.com.invalid/search?q=keep',
+    'https://google.co.fake/search?q=keep', 'https://www.google.cz/maps?q=keep'
+  ]) assert.equal(matches(raw), false, raw);
+});
+
+test('full-line rule comments are ignored; non-ASCII paths explain encoding', () => {
+  assert.deepEqual(parseCustomRules('# Private search\n  # Another note\nsearx.test /search q'), [{ host: 'searx.test', path: '/search', param: 'q' }]);
+  assert.throws(() => parseCustomRules('searx.test /café q'), /Percent-encode/);
+  assert.deepEqual(parseCustomRules('searx.test /caf%C3%A9 q'), [{ host: 'searx.test', path: '/caf%C3%A9', param: 'q' }]);
+});
+
+test('the same aggregate length limit applies to stored and submitted rules', () => {
+  const longRule = { host: 'a'.repeat(63) + '.test', path: '/' + 'x'.repeat(500), param: 'q' };
+  assert.throws(() => normalizeSettings({ customRules: Array(30).fill(longRule) }), /16000/);
+  const line = 'searx.test /search q';
+  const boundary = line + '\n#' + 'x'.repeat(16000 - line.length - 2);
+  assert.equal(parseCustomRules(boundary).length, 1);
+  assert.throws(() => parseCustomRules(boundary + 'x'), /16000/);
+  assert.equal(parseCustomRules('searx.test /search q\n'.repeat(100)).length, 100);
+  assert.throws(() => normalizeSettings({ customRules: Array(101).fill({ host: 's.test', path: '/', param: 'q' }) }), /Invalid/);
 });
 
 test('ordinary browsing, unrelated queries, fragments, and hostile hosts survive', () => {
