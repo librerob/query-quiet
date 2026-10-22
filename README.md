@@ -1,4 +1,4 @@
-# Query Quiet
+<p><img src="assets/readme-header.svg" alt="Query Quiet — Search URLs out of history." width="960"></p>
 
 Remove search result URLs from Chrome history as you visit them. A small Manifest V3 extension, written in vanilla JavaScript, with no dependencies or build step.
 
@@ -54,7 +54,7 @@ No polling, alarms, content scripts, offscreen pages, persistent connections, pe
 
 ## Footprint and verification
 
-The installable package has seven files, **15,975 bytes unpacked** and **7,375 bytes zipped** in this build: well below 100 KB. Documentation, tests, and development tools are excluded from the install ZIP. The packager enforces a strict 100,000-byte ceiling for both forms.
+The installable package has eleven files, **20,601 bytes unpacked** and **12,297 bytes zipped** in this build: well below 100 KB. Documentation, README/store artwork, tests, and development tools are excluded from the install ZIP. The packager enforces a strict 100,000-byte ceiling for both forms.
 
 Warm matcher benchmark on Windows x64, AMD Ryzen 7 7435HS, Node 24.19.0: **0.637 microseconds per URL median**, seven rounds of 100,000 mixed synthetic URLs following 50,000 warmup calls. This measures only matching with default settings; it excludes worker startup, settings reads, Chrome API calls, deletion completion, and Omnibox timing. It is not a Chrome end-to-end latency benchmark.
 
@@ -69,6 +69,12 @@ node tools/package.mjs
 The final command writes a deterministic `dist/query-quiet-1.0.0.zip`. Native `URL` / `URLSearchParams` handle parsing; bounded static checks validate rules. A Rust/Wasm layer would add a compiler toolchain, startup cost, and bytes without a demonstrated benefit for this workload.
 
 See [TESTING.md](TESTING.md) for tested behavior and browser verification limits.
+
+## Icon and store assets
+
+The manifest includes PNG icons at 16, 32, 48, and 128 pixels. The open search loop and detached dot suggest a query disappearing from history. Editable SVG masters, a larger PNG, and a 440×280 store promotional tile are in [assets/](assets/README.md). Only the four extension icons enter the install ZIP.
+
+A future Chrome Web Store listing also needs an actual extension screenshot and listing/privacy information. See [Google's image requirements](https://developer.chrome.com/docs/webstore/images); the icon and promotional tile are prepared, but the extension has not been submitted to the store.
 
 ## Privacy and permissions
 

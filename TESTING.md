@@ -26,6 +26,8 @@ Verified with real Chrome APIs:
 
 These checks establish actual history API behavior. They do not establish the ordering of Chrome's Shortcuts writes, guarantee all Omnibox suggestions disappear, or measure total browser memory after idle termination. Those remain browser-controlled properties.
 
+Branding checks on 22 October 2026: verified manifest PNG dimensions (16, 32, 48, 128), alpha transparency, 16-pixel padding around the 128-pixel icon, and the 440×280 promotional tile. Reviewed the mark on light/dark backgrounds and at each shipped size. Confirmed that the packager includes every manifest icon and excludes README/store artwork. Rechecked extension loading and the options-page favicon in isolated Chrome.
+
 ## Manual acceptance check
 
 Use a temporary Chrome profile because deletion cannot be undone.

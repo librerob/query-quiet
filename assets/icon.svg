@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <title>Query Quiet</title>
+  <desc>A mint search loop opens into a detached dot on a deep pine tile.</desc>
+  <rect x="16" y="16" width="96" height="96" rx="23" fill="#173B32"/>
+  <g stroke="#D0F5DC" stroke-width="9" stroke-linecap="round">
+    <path d="M82.084 47.25a25.5 25.5 0 1 0 0 25.5"/>
+    <path d="m77 78 12 12"/>
+  </g>
+  <circle cx="89" cy="60" r="4.5" fill="#D0F5DC"/>
+</svg>

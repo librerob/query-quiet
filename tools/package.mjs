@@ -4,7 +4,8 @@ import { deflateRawSync } from 'node:zlib';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
-export const RUNTIME_FILES = ['manifest.json', 'background.js', 'rules.js', 'options.html', 'options.js', 'options.css', 'LICENSE'];
+export const RUNTIME_FILES = ['manifest.json', 'background.js', 'rules.js', 'options.html', 'options.js', 'options.css', 'LICENSE',
+  'icons/icon-16.png', 'icons/icon-32.png', 'icons/icon-48.png', 'icons/icon-128.png'];
 export const ROOT = new URL('../', import.meta.url);
 const crcTable = Uint32Array.from({ length: 256 }, (_, n) => {
   for (let bit = 0; bit < 8; bit++) n = (n >>> 1) ^ ((n & 1) ? 0xedb88320 : 0);

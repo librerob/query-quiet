@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="280" viewBox="0 0 440 280" fill="none">
+  <title>Query Quiet promotional tile</title>
+  <rect width="440" height="280" fill="#173B32"/>
+  <g transform="translate(112 32) scale(1.6875)" stroke="#D0F5DC" stroke-width="9" stroke-linecap="round">
+    <path d="M82.084 47.25a25.5 25.5 0 1 0 0 25.5"/>
+    <path d="m77 78 12 12"/>
+    <circle cx="89" cy="60" r="4.5" fill="#D0F5DC" stroke="none"/>
+  </g>
+</svg>

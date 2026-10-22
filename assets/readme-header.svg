@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" fill="none">
+  <title>Query Quiet</title>
+  <desc>A minimal search mark beside the Query Quiet wordmark. Search URLs out of history.</desc>
+  <rect width="1280" height="300" rx="18" fill="#101F1A"/>
+  <g transform="translate(68 54) scale(1.5)" stroke="#D0F5DC" stroke-width="9" stroke-linecap="round">
+    <path d="M82.084 47.25a25.5 25.5 0 1 0 0 25.5"/>
+    <path d="m77 78 12 12"/>
+    <circle cx="89" cy="60" r="4.5" fill="#D0F5DC" stroke="none"/>
+  </g>
+  <text x="300" y="159" fill="#E6F5EB" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="500" letter-spacing="-3">Query Quiet</text>
+  <text x="303" y="202" fill="#9DB6A8" font-family="Arial, Helvetica, sans-serif" font-size="21" letter-spacing=".1">Search URLs out of history.</text>
+  <path d="M1030 76a79 79 0 1 0 0 79" stroke="#254637" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="1063" cy="115.5" r="3" fill="#648E75"/>
+</svg>
